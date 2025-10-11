@@ -15,6 +15,10 @@ using ordered_set_desc = tree<T, null_type, greater<T>, rb_tree_tag, tree_order_
 //return r - l; // O(log n) //oset<int> s;  s.insert(5); s.insert(2);s.insert(8);
 //cout << s.order_of_key(6) << "\n"; // elements < 6 => 2 (2 and 5)-> no_of_elements_less_than_6
 //cout << s.find_by_order(1) << "\n"; // 0-based index 1 => 5 -> 1st_element_in_set
+//set<int> posns; multiset<int> lengths;
+// auto it = posns.lower_bound(light); // first >= light int right = *it; it--; int left = *it; --> can do like this
+//lengths.erase(lengths.find(right - left));---> remove one occurence, without .find removes all occurences
+//*lengths.rbegin() --> accessing last element of any set/multiset/oset
 typedef long long int ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
