@@ -3,6 +3,8 @@
 // --- Sieve-based Precomputation ---
 vector<int> spf;
 vector<int> primes;
+const int MAXN=1e6+5;
+vector<vector<int>>divisors_odd_parity;
 void sieve() {
     spf.assign(N_SIEVE, 0);
     for (int i = 2; i < N_SIEVE; i++) {
@@ -13,6 +15,23 @@ void sieve() {
         }
     }
 }
+    void pre(){
+        for(int num=1;num<MAXN;num++){
+            int temp=num;
+            for(int i=0;i<primes.size();i++){
+                int p=primes[i];
+                if(1LL*p*p>temp) break;
+                    int cnt=0;
+                    while(temp%p==0){
+                        temp=temp/p;
+                        cnt++;
+                    } //otherwise move to next prime number
+                    if(cnt & 1) divisors_odd_parity[num].push_back(p); 
+            }
+            if(temp>1) divisors_odd_parity[num].push_back(temp); 
+        }
+        // if num is 21 would break when p==5, 7 leftout 
+    }
 map<int, int> getPrimeFactorization(int n) {
     map<int, int> factors;
     while (n > 1) { factors[spf[n]]++; n /= spf[n]; }
