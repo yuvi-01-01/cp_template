@@ -80,6 +80,23 @@ public:
         return depth[u] + depth[v] - 2 * depth[lca_node];
     }
 };
+// in and out time - useful for tree flattening
+void dfs(int node,int par,vector<vi> &adj,vi &in, vi &out,int &tim){
+    in[node]=++tim;
+    for(int child: adj[node]){
+        if(child == par) continue;
+        dfs(child,node,adj,in,out,tim);
+    }
+    out[node]=tim;
+}
+// SegmentTree st(n);
+  //vl flat(n+1);
+  //for(int node=1; node<=n; node++) flat[in[node]] = val[node];
+  // to ensure segment tree is contiguous, see above example
+  // flat [ val[1],  val[2],val[4],val[5],  val[3],val[6],val[7]] 2,4,5 must be contiguous as same subtree
+  //flat is now kinda a contiguous array corresponding to our give tree,,which is reqd for segment tree 
+ // st.build(flat,1,1,n); // 1 is node , 1 is start , n is end
+
 
 /*
 // -------------------- HOW TO USE BINARY LIFTING --------------------
