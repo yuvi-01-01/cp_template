@@ -175,4 +175,68 @@ public:
     - If you plan to insert elements later manually, you can skip build()
       and rely on update() calls to initialize values one by one.
 --------------------------------------------------------------*/
+class SegmentTreeRangeUpdatePointQuery {
+public:
+    int n;          // size of array
+    vl tree, lazy;  // tree stores values, lazy stores pending updates
+
+    SegmentTreeRangeUpdatePointQuery(int size) {
+        n = size;
+        tree.assign(4*n, 0);  // segment tree requires 4*n nodes
+        lazy.assign(4*n, 0);  // lazy array to store pending updates
+    }
+
+    // Lazy propagation: push pending updates to children
+    void push(int node, int start, int end) {
+        if(lazy[node] != 0) {
+            tree[node] += lazy[node]; // apply pending increment
+            if(start != end) { // propagate to children if not a leaf
+                lazy[2*node] += lazy[node];
+                lazy[2*node+1] += lazy[node];
+            }
+            lazy[node] = 0; // clear current node's lazy value
+        }
+    }
+
+    // Range update: add 'val' to all elements in [l, r]
+    void range_update(int node, int start, int end, int l, int r, ll val) {
+        push(node, start, end); // ensure current node is up-to-date
+
+        if(r < start || end < l) return; // no overlap
+        if(l <= start && end <= r) {     // complete overlap
+            lazy[node] += val;           // store in lazy
+            push(node, start, end);      // immediately apply it
+            return;
+        }
+
+        // partial overlap: recur for children
+        int mid = (start + end) / 2;
+        range_update(2*node, start, mid, l, r, val);
+        range_update(2*node+1, mid+1, end, l, r, val);
+    }
+
+    // Point query at index 'idx'
+    ll point_query(int node, int start, int end, int idx) {
+        push(node, start, end); // apply pending updates
+
+        if(start == end) return tree[node]; // leaf node reached
+
+        int mid = (start + end)/2;
+        if(idx <= mid) return point_query(2*node, start, mid, idx);
+        else return point_query(2*node+1, mid+1, end, idx);
+    }
+};
+
+/*
+int n = 8;
+vl a = {0, 3, 2, 4, 5, 1, 1, 5, 3}; // 1-based indexing // Step 1: Initialize the segment tree -> SegmentTreeRangeUpdatePointQuery seg(n);
+// Step 2: Set initial array values
+// Treat each a[i] as a range update [i,i] += a[i]
+for(int i = 1; i <= n; i++) seg.range_update(1, 1, n, i, i, a[i]);
+// Step 3: Range update query
+// Add 2 to all elements in range [2,5]
+seg.range_update(1, 1, n, 2, 5, 2);
+// Step 4: Point query
+// Get value at index 4 ll val = seg.point_query(1, 1, n, 4);  // returns updated value cout << val << endl;
+*/
 
