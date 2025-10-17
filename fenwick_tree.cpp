@@ -2,29 +2,48 @@ class BIT {
 public:
     int n;
     vl tree;
-    BIT(int size){
-        n=size+2; //safe
-        tree.assign(n,0);
+    BIT(int size) {
+        n = size + 2; // safe
+        tree.assign(n, 0);
     }
-    void update(int idx,ll delta){
-        while(idx<n){
+
+    // Internal: least significant bit
+    int rsb(int i) {
+        return i & -i;
+    }
+
+    // Point update in BIT
+    void update(int idx, ll delta) {
+        while (idx < n) {
             tree[idx] += delta;
             idx += rsb(idx);
         }
     }
-    ll presum(int idx){
-        ll res=0;
-        while(idx > 0){
+
+    // Prefix sum query
+    ll presum(int idx) {
+        ll res = 0;
+        while (idx > 0) {
             res += tree[idx];
             idx -= rsb(idx);
         }
         return res;
     }
-    ll query(int l,int r){
-        return presum(r)-presum(l-1);
+
+    // ----------------------------
+    // New: Range update [l,r] += delta
+    void range_update(int l, int r, ll delta) {
+        update(l, delta);
+        update(r + 1, -delta);
     }
-    int rsb(int i){
-        return (i & (-i));
+
+    // Point query at idx
+    ll point_query(int idx) {
+        return presum(idx);
     }
-    
 };
+
+//int n = 8; BIT bit(n);
+// Initial array vl a = {0, 3, 2, 4, 5, 1, 1, 5, 3}; // 1-based
+// Query type 1: range update [2,5] += 1   --> bit.range_update(2, 5, 1);
+// Query type 2: point query at index 4--> ll val = a[4] + bit.point_query(4); // val = 5 + 1 = 6 
