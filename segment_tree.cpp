@@ -240,3 +240,112 @@ seg.range_update(1, 1, n, 2, 5, 2);
 // Get value at index 4 ll val = seg.point_query(1, 1, n, 4);  // returns updated value cout << val << endl;
 */
 
+
+// -------------------------
+// Range Add + Point Min Query
+class SegmentTreeRangeUpdatePointQueryMin {
+public:
+    int n;
+    vl tree, lazy;
+
+    SegmentTreeRangeUpdatePointQueryMin(int size) {
+        n = size;
+        tree.assign(4*n, LLONG_MAX); // initialize with +∞
+        lazy.assign(4*n, 0);
+    }
+
+    void push(int node, int start, int end) {
+        if(lazy[node] != 0) {
+            tree[node] += lazy[node]; // apply pending increment
+            if(start != end) {
+                lazy[2*node] += lazy[node];
+                lazy[2*node+1] += lazy[node];
+            }
+            lazy[node] = 0;
+        }
+    }
+
+    void range_update(int node, int start, int end, int l, int r, ll val) {
+        push(node, start, end);
+        if(r < start || end < l) return;
+        if(l <= start && end <= r) {
+            lazy[node] += val;
+            push(node, start, end);
+            return;
+        }
+        int mid = (start + end)/2;
+        range_update(2*node, start, mid, l, r, val);
+        range_update(2*node+1, mid+1, end, l, r, val);
+        tree[node] = min(tree[2*node], tree[2*node+1]);
+    }
+
+    ll point_query(int node, int start, int end, int idx) {
+        push(node, start, end);
+        if(start == end) return tree[node];
+        int mid = (start + end)/2;
+        if(idx <= mid) return point_query(2*node, start, mid, idx);
+        else return point_query(2*node+1, mid+1, end, idx);
+    }
+};
+
+// -------------------------
+// Range Add + Point Max Query
+class SegmentTreeRangeUpdatePointQueryMax {
+public:
+    int n;
+    vl tree, lazy;
+
+    SegmentTreeRangeUpdatePointQueryMax(int size) {
+        n = size;
+        tree.assign(4*n, LLONG_MIN); // initialize with -∞
+        lazy.assign(4*n, 0);
+    }
+
+    void push(int node, int start, int end) {
+        if(lazy[node] != 0) {
+            tree[node] += lazy[node]; // apply pending increment
+            if(start != end) {
+                lazy[2*node] += lazy[node];
+                lazy[2*node+1] += lazy[node];
+            }
+            lazy[node] = 0;
+        }
+    }
+
+    void range_update(int node, int start, int end, int l, int r, ll val) {
+        push(node, start, end);
+        if(r < start || end < l) return;
+        if(l <= start && end <= r) {
+            lazy[node] += val;
+            push(node, start, end);
+            return;
+        }
+        int mid = (start + end)/2;
+        range_update(2*node, start, mid, l, r, val);
+        range_update(2*node+1, mid+1, end, l, r, val);
+        tree[node] = max(tree[2*node], tree[2*node+1]);
+    }
+
+    ll point_query(int node, int start, int end, int idx) {
+        push(node, start, end);
+        if(start == end) return tree[node];
+        int mid = (start + end)/2;
+        if(idx <= mid) return point_query(2*node, start, mid, idx);
+        else return point_query(2*node+1, mid+1, end, idx);
+    }
+};
+
+/*
+Usage:
+int n; cin >> n;
+SegmentTreeRangeUpdatePointQueryMin segMin(n);
+SegmentTreeRangeUpdatePointQueryMax segMax(n);
+
+// Range add: add val to [l, r]
+segMin.range_update(1, 1, n, l, r, val);
+segMax.range_update(1, 1, n, l, r, val);
+
+// Point query at idx
+ll mn = segMin.point_query(1, 1, n, idx);
+ll mx = segMax.point_query(1, 1, n, idx);
+*/
