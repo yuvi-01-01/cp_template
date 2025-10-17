@@ -1,5 +1,6 @@
 class BIT {
 public:
+//// Initialize BIT with array --> for(int i=1;i<=n;i++) bit.update(i, a[i]); for range sum query and point update
     int n;
     vl tree;
     BIT(int size){
@@ -68,6 +69,7 @@ public:
 };
 
 //int n = 8; BIT bit(n);
-// Initial array vl a = {0, 3, 2, 4, 5, 1, 1, 5, 3}; // 1-based
+//for (int i = 1; i <= 8; i++)  bit.range_update(i, i, a[i]);
+// Initial array vl a = {0, 3, 2, 4, 5, 1, 1, 5, 3}; // 1-based, 0 ignore
 // Query type 1: range update [2,5] += 1   --> bit.range_update(2, 5, 1);
 // Query type 2: point query at index 4--> ll val = a[4] + bit.point_query(4); // val = 5 + 1 = 6 
