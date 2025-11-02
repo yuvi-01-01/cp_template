@@ -15,6 +15,8 @@ using ordered_set_desc = tree<T, null_type, greater<T>, rb_tree_tag, tree_order_
 //return r - l; // O(log n) //oset<int> s;  s.insert(5); s.insert(2);s.insert(8);
 //cout << s.order_of_key(6) << "\n"; // elements < 6 => 2 (2 and 5)-> no_of_elements_less_than_6
 //cout << s.find_by_order(1) << "\n"; // 0-based index 1 => 5 -> 1st_element_in_set
+// NUMBER OF ELEMENTS B/W S1 and S2 such that S1<=x<=S2 --> int cnt = s.order_of_key(s2 + 1) - s.order_of_key(s1);
+// ORDERED_MULTISET just store as pair say {S,i} where i is index and in order_of_key do {s2+1,-1} and {s1,-1}
 //set<int> posns; multiset<int> lengths;
 // auto it = posns.lower_bound(light); // first >= light int right = *it; it--; int left = *it; --> can do like this
 //lengths.erase(lengths.find(right - left));---> remove one occurence, without .find removes all occurences
@@ -29,7 +31,7 @@ typedef vector<ll> vl;
 #define all(x) x.begin(), x.end()
 #define pb push_back
 #define f first
-#define s second
+#define s second 
 #define oset ordered_set
 #define mset multiset
 const ll MOD = 1e9 + 7;  const ll INF = 1e18;
