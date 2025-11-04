@@ -35,6 +35,15 @@ typedef vector<ll> vl;
 #define oset ordered_set
 #define mset multiset
 const ll MOD = 1e9 + 7;  const ll INF = 1e18;
+
+// Random number generator (for randomized algorithms, e.g. random sampling in queries)
+// mt19937 is a high-quality 32-bit Mersenne Twister PRNG (better than rand())
+// chrono::steady_clock ensures different seeds every run
+mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+// To generate a random integer in [L, R]: --> int x = uniform_int_distribution<int>(L, R)(rng);
+// Use it inside solve() or any function where you need random sampling --> Example: int idx = uniform_int_distribution<int>(l, r)(rng);
+//void solve() { int l = 10, r = 20;int random_index = uniform_int_distribution<int>(l, r)(rng);cout << "Random index = " << random_index << "\n";}
+
 ll mod_add(ll a, ll b, ll m = MOD) { a = a % m; b = b % m; return (((a + b) % m) + m) % m; }
 ll mod_mul(ll a, ll b, ll m = MOD) { a = a % m; b = b % m; return (((a * b) % m) + m) % m; }
 ll mul(ll a,ll b) {return a*b;}
