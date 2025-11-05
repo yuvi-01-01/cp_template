@@ -21,6 +21,7 @@ using ordered_set_desc = tree<T, null_type, greater<T>, rb_tree_tag, tree_order_
 // auto it = posns.lower_bound(light); // first >= light int right = *it; it--; int left = *it; --> can do like this
 //lengths.erase(lengths.find(right - left));---> remove one occurence, without .find removes all occurences
 //*lengths.rbegin() --> accessing last element of any set/multiset/oset
+// auto itTop = prev(top.end());  accessing last element, forward iterator to last element can erase directly unlike rbegin
 typedef long long int ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
