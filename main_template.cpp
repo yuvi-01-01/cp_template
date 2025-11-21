@@ -22,6 +22,13 @@ using ordered_set_desc = tree<T, null_type, greater<T>, rb_tree_tag, tree_order_
 //lengths.erase(lengths.find(right - left));---> remove one occurence, without .find removes all occurences
 //*lengths.rbegin() --> accessing last element of any set/multiset/oset
 // auto itTop = prev(top.end());  accessing last element, forward iterator to last element can erase directly unlike rbegin
+// set<int> st = {1,2,3,4,5,6};auto it = st.begin();
+//while (it != st.end()) {
+//    if (*it % 2 == 0) it = st.erase(it);  // remove even number
+//     else it++;}
+// Safe erase while iterating over set/map: erase(it) removes the element at 'it'  AND returns iterator to next element
+// ->use: it = st.erase(it);  ->//Never do: st.erase(it); it++;  // 'it' becomes invalid → UB
+
 typedef long long int ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
